@@ -67,7 +67,7 @@ def process_image():
                 line_x = line_bbox[2]
                 
                 # If the line is too wide, finalize the previous line and start a new one
-                if line_x + 30 > max_x:
+                if line_x + 60 > max_x:
                     # Remove the last word from the current line
                     current_line.pop()
                     # Draw the previous line justified
@@ -100,13 +100,13 @@ def process_image():
                 position = (position[0], position[1] + 40)  # Move to the next line after drawing the last line
 
         #################################################################################################################
-        align_right = 1200  
+        align_right = 1190 
         font_size1 = 17.26 
         font_size2 = 22.19             
         font1 = ImageFont.truetype("./fonts/altergothic.ttf", font_size1)
         font2 = ImageFont.truetype("./fonts/futureextra.ttf", font_size2)
         x = align_right - (draw.textbbox((0, 0), xungHo, font=font1)[2] + 10 + draw.textbbox((0, 0), ten, font=font2)[2])
-        y = 550
+        y = 565
 
         position = (x, y + 6)                      
         text_color = (233, 77, 25)
