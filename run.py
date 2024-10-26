@@ -7,17 +7,28 @@ app = Flask(__name__)
 CORS(app)
 
 # Function for cropping the avatar image to a circle
-def crop_to_circle(input_image, diameter=310):
+def crop_to_circle(input_image, diameter=320):
+    # Open the input image and convert it to RGBA
     img = Image.open(input_image).convert("RGBA")
+    
+    # Create a new image with transparent background for the circle
     circle_image = Image.new("RGBA", (diameter, diameter), (255, 255, 255, 0))
+    
+    # Create a mask for the circular area
     mask = Image.new("L", (diameter, diameter), 0)
     draw = ImageDraw.Draw(mask)
-    draw.ellipse((0, 0, diameter, diameter), fill=255)
-    mask = mask.filter(ImageFilter.GaussianBlur(1))
-    img = img.resize((diameter, diameter), Image.LANCZOS)
-    circle_image.paste(img, (0, 0), mask)
-    return circle_image
+    draw.ellipse((5, 5, diameter-5, diameter-5), fill=255)  # Slight padding for a smoother edge
 
+    # Apply a Gaussian blur for smoother edges
+    mask = mask.filter(ImageFilter.GaussianBlur(2))
+
+    # Resize the original image with high-quality resampling
+    img = img.resize((diameter, diameter), Image.LANCZOS)
+    
+    # Paste the resized image onto the circular image using the mask
+    circle_image.paste(img, (0, 0), mask)
+    
+    return circle_image
 @app.route('/api/endpoint', methods=['POST'])
 def process_image():
     if 'avatar' not in request.files or not all(key in request.form for key in ['ten', 'xungHo', 'chucVu', 'longText']):
@@ -128,7 +139,7 @@ def process_image():
         draw.text(position,chucVu,font=font, fill=text_color)
         #################################################################################################################
         avatarImg = Image.open(avatar_cropped_path)
-        img.paste(avatarImg, (147, 261), avatarImg)
+        img.paste(avatarImg, (142, 256), avatarImg)
         #test.save("./imgs/dpi.png", dpi=(300, 300))
         img.save(output_image_path)
         #print(f"Image saved as {output_path}")
