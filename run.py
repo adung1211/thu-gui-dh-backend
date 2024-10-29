@@ -55,7 +55,7 @@ def process_image():
         draw = ImageDraw.Draw(img)
 
         position = (560, 235)            
-        font_size =  28               
+        font_size =  32               
         text_color = (19, 97, 180)
         font = ImageFont.truetype("./fonts/cocofy.ttf", font_size)
 
